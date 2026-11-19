@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRO collection</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f2f8ff;color:#53677f;font-family:Arial,sans-serif}
+header{text-align:center;padding:35px 15px 25px;background:linear-gradient(140deg,#dceeff,#f8fbff)}
+h1{font-size:30px;letter-spacing:2px;margin:0;color:#729bc5}
+header p{font-size:12px;letter-spacing:2px;color:#9ab2cc}
+main{max-width:850px;margin:auto;padding:20px}
+h2{font-size:20px;color:#729bc5}
+button{border:0;border-radius:20px;padding:10px 15px;background:#dcecff;color:#6488ae;font-size:13px;cursor:pointer;margin:3px}
+button.active{background:#8eb7df;color:white}
+.card{background:white;border:1px solid #e3effb;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 12px #dce9f455}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.goods{background:white;border:1px solid #e3effb;border-radius:15px;padding:10px}
+.goods img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#edf5fc}
+.goods h3{font-size:14px;margin:9px 0 5px}
+.small{font-size:12px;color:#9aafc5}
+input{width:100%;padding:12px;border:1px solid #dce8f5;border-radius:12px;margin:5px 0}
+footer{text-align:center;padding:30px;color:#a5b8cc;font-size:11px}
+</style>
+</head>
+<body>
+<header>
+<h1>☁ IRO collection</h1>
+<p>MY LITTLE GOODS ARCHIVE</p>
+</header>
+<main>
+<section class="card">
+<h2>My collection</h2>
+<p class="small">나만의 작은 굿즈 아카이브</p>
+<div id="summary">전체 굿즈를 모아보세요 ☁</div>
+</section>
+
+<h2>Collection archive</h2>
+<div id="events"></div>
+<section class="card">
+<h2 id="selectedTitle">전체 굿즈</h2>
+<div id="filters"></div>
+<div class="grid" id="goods"></div>
+</section>
+<footer>IRO collection · Keep your little memories</footer>
+</main>
+
+<script>
+const events = [
+ {name:"2025 생일",subs:["포토카드","지류","아크릴","인형"]},
+ {name:"크리스마스",subs:["포토카드","아크릴","뱃지"]},
+ {name:"여름 팝업",subs:["포토카드","지류"]}
+];
+let selected = -1;
+let filter = "전체";
+
+function render(){
+ const eventBox=document.getElementById("events");
+ eventBox.innerHTML="";
+ events.forEach((e,i)=>{
+  const b=document.createElement("button");
+  b.textContent="☁ "+e.name;
+  b.className=selected===i?"active":"";
+  b.onclick=()=>{selected=i;filter="전체";render()};
+  eventBox.appendChild(b);
+ });
+ document.getElementById("selectedTitle").textContent=
+ selected<0?"전체 굿즈":events[selected].name;
+ const filters=document.getElementById("filters");
+ filters.innerHTML="";
+ const all=document.createElement("button");
+ all.textContent="전체";
+ all.className=filter==="전체"?"active":"";
+ all.onclick=()=>{filter="전체";render()};
+ filters.appendChild(all);
+ const subs=selected<0?[...new Set(events.flatMap(e=>e.subs))]:events[selected].subs;
+ subs.forEach(s=>{
+  const b=document.createElement("button");
+  b.textContent=s;b.className=filter===s?"active":"";
+  b.onclick=()=>{filter=s;render()};
+  filters.appendChild(b);
+ });
+ document.getElementById("goods").innerHTML=
+ '<p class="small">아직 등록된 굿즈가 없어요. 다음 단계에서 굿즈 등록 기능을 연결할게요 ☁</p>';
+ document.getElementById("summary").textContent=
+ events.length+"개의 대분류가 준비되어 있어요.";
+}
+render();
+</script>
+</body>
+</html>
