@@ -89,5 +89,40 @@ function render(){
 }
 render();
 </script>
+ 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+  import {
+    getAuth,
+    signInAnonymously
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCXmbinXLzKilJAdH0Xlvl2ibAocCNfPj8",
+    authDomain: "iro-collection.firebaseapp.com",
+    projectId: "iro-collection",
+    storageBucket: "iro-collection.firebasestorage.app",
+    messagingSenderId: "868589552640",
+    appId: "1:868589552640:web:6c23c86359cfb4be3c04e5",
+    measurementId: "G-J0EDXXG11P"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("Firebase 연결 및 익명 로그인 성공!");
+    })
+    .catch((error) => {
+      console.error("Firebase 연결 오류:", error);
+    });
+
+  window.db = db;
+  window.auth = auth;
+</script>
+
 </body>
 </html>
